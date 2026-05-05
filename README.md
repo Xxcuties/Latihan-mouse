@@ -5,8 +5,8 @@
 Target utamanya adalah anak-anak SD yang masih sering bingung membedakan **klik kiri** 🖱️ dan **klik kanan** 🖱️.  
 Dengan pendekatan berbentuk game interaktif, aplikasi ini bisa menjadi media belajar tambahan yang menyenangkan 💖.
 
-👉 Bisa langsung dimainkan di sini:  
-[Latihan Mouse Demo](https://xxcuties.github.io/Latihan-mouse/)
+👉 Untuk guru dan pengajar, silakan langsung mencoba di sini:  
+[🌈 Latihan Mouse Demo](https://xxcuties.github.io/Latihan-mouse/)
 
 ---
 
@@ -31,7 +31,8 @@ Guru atau pengembang bisa memanfaatkannya sebagai **alat bantu pembelajaran prak
 
 ---
 
-## 🐰 Cara Menjalankan
-1. Clone repository ini:
+## 🐰 Untuk Guru & Pengembang
+- 🏫 **Guru**: bisa dipakai sebagai media latihan di kelas komputer dasar.  
+- 💻 **Pengembang**: feel free untuk meng-clone repo ini dan mengembangkan lebih lanjut ✨  
    ```bash
    git clone https://github.com/Xxcuties/Latihan-mouse.git
