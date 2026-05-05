@@ -1,152 +1,70 @@
-
-<style>
-* { box-sizing: border-box; margin: 0; padding: 0; }
-#wrap { padding: 1rem 0; font-family: var(--font-sans); user-select: none; }
-.stats { display: flex; gap: 10px; margin-bottom: 14px; }
-.stat { flex: 1; background: var(--color-background-secondary); border-radius: var(--border-radius-md); padding: 10px; text-align: center; }
-.slabel { font-size: 11px; color: var(--color-text-secondary); font-weight: 500; }
-.sval { font-size: 22px; font-weight: 500; color: var(--color-text-primary); }
-.row { display: flex; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
-.pill { flex: 1; min-width: 70px; border: 0.5px solid var(--color-border-secondary); background: var(--color-background-primary); color: var(--color-text-secondary); border-radius: var(--border-radius-md); padding: 7px 4px; font-size: 12px; cursor: pointer; font-family: var(--font-sans); transition: all 0.12s; }
-.pill:hover { background: var(--color-background-secondary); }
-.pill.on { background: #185FA5; border-color: #185FA5; color: #E6F1FB; }
-.slabel2 { font-size: 11px; color: var(--color-text-secondary); margin-bottom: 5px; }
-
-#arena {
-  position: relative;
-  width: 100%;
-  height: 260px;
-  border-radius: var(--border-radius-lg);
-  border: 0.5px solid var(--color-border-tertiary);
-  background: var(--color-background-secondary);
-  overflow: hidden;
-  margin-bottom: 10px;
-}
-
-#click-zone {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-}
-
-#prompt-box { text-align: center; pointer-events: none; }
-#ptext { font-size: 34px; font-weight: 500; color: var(--color-text-primary); line-height: 1.1; }
-#psub { font-size: 13px; color: var(--color-text-secondary); margin-top: 6px; }
-
-#floating-btn {
-  position: absolute;
-  width: 130px;
-  height: 130px;
-  border-radius: 50%;
-  display: none;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  border: 3px solid #185FA5;
-  background: #E6F1FB;
-  gap: 4px;
-  pointer-events: none;
-}
-#floating-btn span { font-size: 13px; font-weight: 500; color: #042C53; }
-
-#feedback {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 70px;
-  opacity: 0;
-  pointer-events: none;
-  border-radius: var(--border-radius-lg);
-  transition: opacity 0.1s;
-}
-#feedback.show { opacity: 1; }
-
-.ov {
-  position: absolute;
-  inset: 0;
-  background: var(--color-background-primary);
-  border-radius: var(--border-radius-lg);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  padding: 20px;
-  text-align: center;
-}
-.ov h2 { font-size: 18px; font-weight: 500; color: var(--color-text-primary); }
-.ov p { font-size: 13px; color: var(--color-text-secondary); max-width: 280px; line-height: 1.6; }
-.ov .em { font-size: 40px; }
-
-.startbtn {
-  background: #185FA5;
-  color: #E6F1FB;
-  border: none;
-  border-radius: var(--border-radius-md);
-  padding: 11px 28px;
-  font-size: 14px;
-  font-weight: 500;
-  cursor: pointer;
-  font-family: var(--font-sans);
-  margin-top: 4px;
-}
-.startbtn:hover { background: #0C447C; }
-
-.rsgrid { display: flex; gap: 10px; }
-.rscard { background: var(--color-background-secondary); border-radius: var(--border-radius-md); padding: 10px 16px; text-align: center; }
-.rscard .v { font-size: 20px; font-weight: 500; }
-.rscard .l { font-size: 11px; color: var(--color-text-secondary); margin-top: 2px; }
-
-#tbar { width: 100%; height: 5px; background: var(--color-border-tertiary); border-radius: 3px; overflow: hidden; margin-bottom: 12px; }
-#tfill { height: 100%; width: 100%; background: #185FA5; border-radius: 3px; transition: width 0.08s linear, background 0.25s; }
-
-.dots { display: flex; gap: 5px; justify-content: center; margin-bottom: 12px; }
-.dot { width: 9px; height: 9px; border-radius: 50%; background: var(--color-border-secondary); transition: background 0.2s; }
-.dot.ok { background: #1D9E75; }
-.dot.no { background: #E24B4A; }
-.dot.cur { background: #185FA5; }
-
-#hint { font-size: 12px; color: var(--color-text-secondary); text-align: center; }
-
-#side-indicators {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  pointer-events: none;
-}
-.side-ind {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 13px;
-  font-weight: 500;
-  opacity: 0;
-  transition: opacity 0.15s;
-}
-#ind-left { color: #185FA5; }
-#ind-right { color: #1D9E75; }
-#side-indicators.show-left #ind-left { opacity: 0.25; }
-#side-indicators.show-right #ind-right { opacity: 0.25; }
-</style>
-
-<div id="wrap">
-  <h2 class="sr-only">Game latihan klik kanan dan kiri mouse</h2>
-
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Latihan Klik Mouse</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: system-ui, sans-serif; background: #f0f4ff; min-height: 100vh; display: flex; flex-direction: column; align-items: center; padding: 24px 16px 40px; }
+    header { text-align: center; margin-bottom: 20px; }
+    header h1 { font-size: 24px; font-weight: 700; color: #185FA5; }
+    header p { font-size: 14px; color: #555; margin-top: 4px; }
+    .card { background: #fff; border-radius: 16px; box-shadow: 0 4px 24px rgba(26,110,245,0.10); padding: 20px; width: 100%; max-width: 560px; }
+    .stats { display: flex; gap: 10px; margin-bottom: 14px; }
+    .stat { flex: 1; background: #f4f5f7; border-radius: 10px; padding: 10px; text-align: center; }
+    .slabel { font-size: 11px; color: #666; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
+    .sval { font-size: 22px; font-weight: 700; color: #1a1a2e; }
+    .row { display: flex; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
+    .slabel2 { font-size: 11px; color: #666; margin-bottom: 5px; font-weight: 600; text-transform: uppercase; }
+    .pill { flex: 1; min-width: 70px; border: 2px solid #e0e0e0; background: #fff; color: #666; border-radius: 10px; padding: 7px 4px; font-size: 12px; font-weight: 700; cursor: pointer; transition: all 0.12s; }
+    .pill:hover { border-color: #185FA5; color: #185FA5; }
+    .pill.on { background: #185FA5; border-color: #185FA5; color: #fff; }
+    .dots { display: flex; gap: 5px; justify-content: center; margin-bottom: 12px; }
+    .dot { width: 9px; height: 9px; border-radius: 50%; background: #ddd; transition: background 0.2s; }
+    .dot.ok { background: #1D9E75; }
+    .dot.no { background: #E24B4A; }
+    .dot.cur { background: #185FA5; }
+    #arena { position: relative; width: 100%; height: 260px; border-radius: 16px; border: 1px solid #e8eaed; background: #f4f5f7; overflow: hidden; margin-bottom: 10px; }
+    #click-zone { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+    #prompt-box { text-align: center; pointer-events: none; }
+    #ptext { font-size: 34px; font-weight: 700; line-height: 1.1; }
+    #psub { font-size: 13px; color: #666; margin-top: 6px; }
+    #floating-btn { position: absolute; width: 130px; height: 130px; border-radius: 50%; display: none; flex-direction: column; align-items: center; justify-content: center; pointer-events: none; gap: 4px; border: 3px solid #185FA5; background: #E6F1FB; }
+    #floating-btn span { font-size: 13px; font-weight: 700; color: #042C53; }
+    #feedback { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 70px; opacity: 0; pointer-events: none; border-radius: 16px; transition: opacity 0.1s; }
+    #feedback.show { opacity: 1; }
+    .ov { position: absolute; inset: 0; background: #fff; border-radius: 16px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; padding: 20px; text-align: center; }
+    .ov h2 { font-size: 18px; font-weight: 700; }
+    .ov p { font-size: 13px; color: #666; max-width: 280px; line-height: 1.6; }
+    .ov .em { font-size: 40px; }
+    .startbtn { background: #185FA5; color: #fff; border: none; border-radius: 10px; padding: 11px 28px; font-size: 14px; font-weight: 700; cursor: pointer; margin-top: 4px; }
+    .startbtn:hover { background: #0C447C; }
+    .rsgrid { display: flex; gap: 10px; }
+    .rscard { background: #f4f5f7; border-radius: 10px; padding: 10px 16px; text-align: center; }
+    .rscard .v { font-size: 20px; font-weight: 700; }
+    .rscard .l { font-size: 11px; color: #666; margin-top: 2px; }
+    #tbar { width: 100%; height: 5px; background: #e0e0e0; border-radius: 3px; overflow: hidden; margin-bottom: 12px; }
+    #tfill { height: 100%; width: 100%; background: #185FA5; border-radius: 3px; transition: width 0.08s linear, background 0.25s; }
+    #hint { font-size: 12px; color: #888; text-align: center; }
+    .side-ind { position: absolute; top: 50%; transform: translateY(-50%); font-size: 13px; font-weight: 700; opacity: 0; transition: opacity 0.15s; pointer-events: none; }
+    #ind-left { left: 12px; color: #185FA5; }
+    #ind-right { right: 12px; color: #1D9E75; }
+  </style>
+</head>
+<body>
+<header>
+  <h1>🖱️ Latihan Klik Mouse</h1>
+  <p>Klik kiri atau kanan sesuai perintah!</p>
+</header>
+<div class="card">
   <div class="stats">
     <div class="stat"><div class="slabel">Skor</div><div class="sval" id="score">0</div></div>
     <div class="stat"><div class="slabel">Benar</div><div class="sval" id="correct" style="color:#1D9E75">0</div></div>
     <div class="stat"><div class="slabel">Salah</div><div class="sval" id="wrong" style="color:#E24B4A">0</div></div>
   </div>
-
   <div class="slabel2">Mode</div>
-  <div class="row" style="margin-bottom:10px">
+  <div class="row">
     <button class="pill on" onclick="setMode('text',this)">Teks</button>
     <button class="pill" onclick="setMode('icon',this)">Ikon</button>
     <button class="pill" onclick="setMode('color',this)">Warna</button>
@@ -154,22 +72,15 @@
   </div>
   <div class="slabel2">Kecepatan</div>
   <div class="row">
-    <button class="pill" onclick="setDiff(5000,this)">Santai</button>
-    <button class="pill on" onclick="setDiff(3500,this)">Normal</button>
-    <button class="pill" onclick="setDiff(2000,this)">Cepat</button>
+    <button class="pill" onclick="setDiff(5000,this)">🐢 Santai</button>
+    <button class="pill on" onclick="setDiff(3500,this)">🐇 Normal</button>
+    <button class="pill" onclick="setDiff(2000,this)">⚡ Cepat</button>
   </div>
-
   <div class="dots" id="dots"></div>
-
   <div id="arena">
-    <div id="side-indicators">
-      <div class="side-ind" id="ind-left">KIRI</div>
-      <div class="side-ind" id="ind-right">KANAN</div>
-    </div>
-
-    <div id="click-zone"
-      onclick="handleClick(event,'left')"
-      oncontextmenu="handleClick(event,'right')">
+    <div class="side-ind" id="ind-left">◀ KIRI</div>
+    <div class="side-ind" id="ind-right">KANAN ▶</div>
+    <div id="click-zone" onclick="handleClick(event,'left')" oncontextmenu="handleClick(event,'right')">
       <div id="prompt-box">
         <div id="ptext">—</div>
         <div id="psub"></div>
@@ -179,16 +90,13 @@
         <span id="fb-label"></span>
       </div>
     </div>
-
     <div id="feedback"></div>
-
     <div class="ov" id="ov-start">
       <div class="em">🖱️</div>
       <h2>Latihan Klik Mouse</h2>
-      <p>Klik di mana saja — kiri atau kanan — sesuai perintah yang muncul!</p>
+      <p>Klik di mana saja di kotak ini — kiri atau kanan — sesuai perintah yang muncul!</p>
       <button class="startbtn" onclick="startGame()">Mulai</button>
     </div>
-
     <div class="ov" id="ov-result" style="display:none">
       <div class="em" id="r-em">🎉</div>
       <h2 id="r-title">Selesai!</h2>
@@ -200,187 +108,86 @@
       <button class="startbtn" onclick="startGame()">Main Lagi</button>
     </div>
   </div>
-
   <div id="tbar"><div id="tfill"></div></div>
   <div id="hint">Klik kanan = tombol kanan mouse &nbsp;|&nbsp; Klik kiri = tombol kiri (biasa)</div>
 </div>
-
 <script>
-const TOTAL = 10;
-let mode = 'text', timeLimit = 3500;
-let score = 0, ok = 0, bad = 0, round = 0;
-let cmd = null, timer = null, fbTimeout = null, active = false, results = [];
-
-const CMDS = [
-  { side:'left',  label:'KLIK KIRI',  sub:'Klik tombol kiri mouse',  icon:'◀', bg:'#E6F1FB', border:'#185FA5', tc:'#042C53' },
-  { side:'right', label:'KLIK KANAN', sub:'Klik tombol kanan mouse', icon:'▶', bg:'#E1F5EE', border:'#1D9E75', tc:'#04342C' }
+const TOTAL=10;
+let mode='text',timeLimit=3500,score=0,ok=0,bad=0,round=0;
+let cmd=null,timer=null,fbTimeout=null,active=false,results=[];
+const CMDS=[
+  {side:'left', label:'KLIK KIRI', sub:'Klik tombol kiri mouse', icon:'◀', bg:'#E6F1FB', border:'#185FA5', tc:'#042C53'},
+  {side:'right',label:'KLIK KANAN',sub:'Klik tombol kanan mouse',icon:'▶', bg:'#E1F5EE', border:'#1D9E75', tc:'#04342C'}
 ];
-
-function setMode(m, btn) {
-  mode = m;
-  document.querySelectorAll('.pill').forEach(b => {
-    if(['Teks','Ikon','Warna','Campur'].includes(b.textContent)) b.classList.remove('on');
-  });
-  btn.classList.add('on');
-}
-
-function setDiff(ms, btn) {
-  timeLimit = ms;
-  document.querySelectorAll('.pill').forEach(b => {
-    if(['Santai','Normal','Cepat'].includes(b.textContent)) b.classList.remove('on');
-  });
-  btn.classList.add('on');
-}
-
-function makeDots() {
-  const c = document.getElementById('dots');
-  c.innerHTML = '';
-  for (let i = 0; i < TOTAL; i++) {
-    const d = document.createElement('div');
-    d.className = 'dot';
-    if (results[i] === true) d.classList.add('ok');
-    else if (results[i] === false) d.classList.add('no');
-    else if (i === round) d.classList.add('cur');
-    c.appendChild(d);
-  }
-}
-
-function startGame() {
-  score = 0; ok = 0; bad = 0; round = 0; results = [];
-  updateStats(); makeDots();
-  document.getElementById('ov-start').style.display = 'none';
-  document.getElementById('ov-result').style.display = 'none';
-  active = true;
-  nextRound();
-}
-
-function nextRound() {
-  if (round >= TOTAL) { endGame(); return; }
-  clearTimer();
-  cmd = CMDS[Math.random() < 0.5 ? 0 : 1];
-  makeDots();
-  renderPrompt();
-  startTimer();
-}
-
-function renderPrompt() {
-  const fb = document.getElementById('feedback');
-  fb.className = ''; fb.textContent = '';
-  const pb = document.getElementById('prompt-box');
-  const fbt = document.getElementById('floating-btn');
-  const si = document.getElementById('side-indicators');
-  pb.style.opacity = '1'; fbt.style.opacity = '1';
-  si.className = '';
-
-  let eff = mode;
-  if (mode === 'mixed') eff = ['text','icon','color'][Math.floor(Math.random()*3)];
-
-  if (eff === 'color') {
-    pb.style.display = 'none';
-    fbt.style.display = 'flex';
-    fbt.style.background = cmd.bg;
-    fbt.style.borderColor = cmd.border;
-    document.getElementById('fb-icon').textContent = cmd.icon;
-    document.getElementById('fb-label').textContent = cmd.side === 'left' ? 'KIRI' : 'KANAN';
-    document.getElementById('fb-label').style.color = cmd.tc;
-    const arena = document.getElementById('arena');
-    const W = arena.offsetWidth, H = arena.offsetHeight;
-    fbt.style.left = (20 + Math.random() * (W - 170)) + 'px';
-    fbt.style.top  = (20 + Math.random() * (H - 170)) + 'px';
-    fbt.style.position = 'absolute';
+function setMode(m,btn){mode=m;document.querySelectorAll('.pill').forEach(b=>{if(['Teks','Ikon','Warna','Campur'].includes(b.textContent))b.classList.remove('on')});btn.classList.add('on')}
+function setDiff(ms,btn){timeLimit=ms;document.querySelectorAll('.pill').forEach(b=>{if(b.textContent.includes('Santai')||b.textContent.includes('Normal')||b.textContent.includes('Cepat'))b.classList.remove('on')});btn.classList.add('on')}
+function makeDots(){const c=document.getElementById('dots');c.innerHTML='';for(let i=0;i<TOTAL;i++){const d=document.createElement('div');d.className='dot';if(results[i]===true)d.classList.add('ok');else if(results[i]===false)d.classList.add('no');else if(i===round)d.classList.add('cur');c.appendChild(d)}}
+function startGame(){score=0;ok=0;bad=0;round=0;results=[];updateStats();makeDots();document.getElementById('ov-start').style.display='none';document.getElementById('ov-result').style.display='none';active=true;nextRound()}
+function nextRound(){if(round>=TOTAL){endGame();return}clearTimer();cmd=CMDS[Math.random()<0.5?0:1];makeDots();renderPrompt();startTimer()}
+function renderPrompt(){
+  const fb=document.getElementById('feedback');fb.className='';fb.textContent='';
+  const pb=document.getElementById('prompt-box'),fbt=document.getElementById('floating-btn');
+  pb.style.opacity='1';fbt.style.opacity='1';
+  document.getElementById('ind-left').style.opacity='0';
+  document.getElementById('ind-right').style.opacity='0';
+  let eff=mode;if(mode==='mixed')eff=['text','icon','color'][Math.floor(Math.random()*3)];
+  if(eff==='color'){
+    pb.style.display='none';fbt.style.display='flex';
+    fbt.style.background=cmd.bg;fbt.style.borderColor=cmd.border;
+    document.getElementById('fb-icon').textContent=cmd.icon;
+    document.getElementById('fb-label').textContent=cmd.side==='left'?'KIRI':'KANAN';
+    document.getElementById('fb-label').style.color=cmd.tc;
+    const arena=document.getElementById('arena'),W=arena.offsetWidth,H=arena.offsetHeight;
+    fbt.style.left=(20+Math.random()*(W-170))+'px';fbt.style.top=(20+Math.random()*(H-170))+'px';fbt.style.position='absolute';
   } else {
-    fbt.style.display = 'none';
-    pb.style.display = 'flex';
-    pb.style.flexDirection = 'column';
-    pb.style.alignItems = 'center';
-    const pt = document.getElementById('ptext');
-    const ps = document.getElementById('psub');
-    if (eff === 'text') {
-      pt.textContent = cmd.label;
-      pt.style.color = cmd.side === 'left' ? '#185FA5' : '#1D9E75';
-      ps.textContent = cmd.sub;
-      si.className = cmd.side === 'left' ? 'show-left' : 'show-right';
+    fbt.style.display='none';pb.style.display='flex';pb.style.flexDirection='column';pb.style.alignItems='center';
+    const pt=document.getElementById('ptext'),ps=document.getElementById('psub');
+    if(eff==='text'){
+      pt.textContent=cmd.label;pt.style.color=cmd.side==='left'?'#185FA5':'#1D9E75';pt.style.fontSize='34px';ps.textContent=cmd.sub;
+      document.getElementById(cmd.side==='left'?'ind-left':'ind-right').style.opacity='0.3';
     } else {
-      pt.textContent = cmd.icon + '  ' + (cmd.side === 'left' ? 'Kiri' : 'Kanan');
-      pt.style.color = 'var(--color-text-primary)';
-      pt.style.fontSize = '38px';
-      ps.textContent = cmd.sub;
+      pt.textContent=cmd.icon+'  '+(cmd.side==='left'?'Kiri':'Kanan');pt.style.color='#1a1a2e';pt.style.fontSize='38px';ps.textContent=cmd.sub;
     }
   }
 }
-
-function startTimer() {
-  const fill = document.getElementById('tfill');
-  fill.style.width = '100%';
-  fill.style.background = '#185FA5';
-  const start = Date.now();
-  timer = setInterval(() => {
-    const pct = Math.max(0, 1 - (Date.now() - start) / timeLimit);
-    fill.style.width = (pct * 100) + '%';
-    if (pct < 0.3) fill.style.background = '#E24B4A';
-    else if (pct < 0.6) fill.style.background = '#BA7517';
-    if (pct <= 0) { clearTimer(); onTimeout(); }
-  }, 50);
+function startTimer(){
+  const fill=document.getElementById('tfill');fill.style.width='100%';fill.style.background='#185FA5';
+  const start=Date.now();
+  timer=setInterval(()=>{
+    const pct=Math.max(0,1-(Date.now()-start)/timeLimit);
+    fill.style.width=(pct*100)+'%';
+    if(pct<0.3)fill.style.background='#E24B4A';else if(pct<0.6)fill.style.background='#BA7517';
+    if(pct<=0){clearTimer();onTimeout()}
+  },50)
 }
-
-function clearTimer() {
-  if (timer) { clearInterval(timer); timer = null; }
-}
-
-function handleClick(e, side) {
-  e.preventDefault();
-  if (!active || !cmd) return;
+function clearTimer(){if(timer){clearInterval(timer);timer=null}}
+function handleClick(e,side){
+  e.preventDefault();if(!active||!cmd)return;
   clearTimer();
-  const correct = side === cmd.side;
-  results[round] = correct;
-  if (correct) { score += 10; ok++; }
-  else { score = Math.max(0, score - 5); bad++; }
-  round++;
-  updateStats();
-  showFeedback(correct);
+  const correct=side===cmd.side;results[round]=correct;
+  if(correct){score+=10;ok++}else{score=Math.max(0,score-5);bad++}
+  round++;updateStats();showFeedback(correct);
 }
-
-function onTimeout() {
-  if (!active) return;
-  results[round] = false;
-  bad++;
-  score = Math.max(0, score - 3);
-  round++;
-  updateStats();
-  showFeedback(false, true);
+function onTimeout(){if(!active)return;results[round]=false;bad++;score=Math.max(0,score-3);round++;updateStats();showFeedback(false,true)}
+function showFeedback(correct,timeout=false){
+  const fb=document.getElementById('feedback'),pb=document.getElementById('prompt-box'),fbt=document.getElementById('floating-btn');
+  fb.textContent=correct?'✅':(timeout?'⏰':'❌');
+  fb.style.background=correct?'rgba(29,158,117,0.12)':'rgba(226,75,74,0.12)';
+  fb.className='show';pb.style.opacity='0.2';fbt.style.opacity='0.2';
+  document.getElementById('ind-left').style.opacity='0';document.getElementById('ind-right').style.opacity='0';
+  makeDots();if(fbTimeout)clearTimeout(fbTimeout);
+  fbTimeout=setTimeout(()=>{fb.className='';nextRound()},680)
 }
-
-function showFeedback(correct, timeout = false) {
-  const fb = document.getElementById('feedback');
-  const pb = document.getElementById('prompt-box');
-  const fbt = document.getElementById('floating-btn');
-  fb.textContent = correct ? '✅' : (timeout ? '⏰' : '❌');
-  fb.style.background = correct ? 'rgba(29,158,117,0.12)' : 'rgba(226,75,74,0.12)';
-  fb.className = 'show';
-  pb.style.opacity = '0.2'; fbt.style.opacity = '0.2';
-  document.getElementById('side-indicators').className = '';
-  makeDots();
-  if (fbTimeout) clearTimeout(fbTimeout);
-  fbTimeout = setTimeout(() => { fb.className = ''; nextRound(); }, 680);
+function updateStats(){document.getElementById('score').textContent=score;document.getElementById('correct').textContent=ok;document.getElementById('wrong').textContent=bad}
+function endGame(){
+  active=false;clearTimer();const acc=Math.round((ok/TOTAL)*100);
+  document.getElementById('ov-result').style.display='flex';
+  document.getElementById('r-em').textContent=acc>=80?'🎉':acc>=50?'👍':'💪';
+  document.getElementById('r-title').textContent=acc>=80?'Luar biasa!':acc>=50?'Lumayan!':'Ayo latihan lagi!';
+  document.getElementById('r-score').textContent=score;document.getElementById('r-acc').textContent=acc+'%';document.getElementById('r-ok').textContent=ok+'/'+TOTAL;
+  makeDots()
 }
-
-function updateStats() {
-  document.getElementById('score').textContent = score;
-  document.getElementById('correct').textContent = ok;
-  document.getElementById('wrong').textContent = bad;
-}
-
-function endGame() {
-  active = false; clearTimer();
-  const acc = Math.round((ok / TOTAL) * 100);
-  document.getElementById('ov-result').style.display = 'flex';
-  document.getElementById('r-em').textContent = acc >= 80 ? '🎉' : acc >= 50 ? '👍' : '💪';
-  document.getElementById('r-title').textContent = acc >= 80 ? 'Luar biasa!' : acc >= 50 ? 'Lumayan!' : 'Ayo latihan lagi!';
-  document.getElementById('r-score').textContent = score;
-  document.getElementById('r-acc').textContent = acc + '%';
-  document.getElementById('r-ok').textContent = ok + '/' + TOTAL;
-  makeDots();
-}
-
-document.addEventListener('contextmenu', e => { if (active) e.preventDefault(); });
+document.addEventListener('contextmenu',e=>{if(active)e.preventDefault()});
 </script>
+</body>
+</html>
