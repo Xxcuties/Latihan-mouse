@@ -1,566 +1,386 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Latihan Klik Mouse</title>
-  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-    :root {
-      --blue: #1a6ef5;
-      --blue-light: #e8f0fe;
-      --green: #16a05c;
-      --green-light: #e6f9f0;
-      --red: #e03030;
-      --red-light: #fdeaea;
-      --amber: #e07a00;
-      --amber-light: #fff3e0;
-      --gray: #f4f5f7;
-      --gray2: #e8eaed;
-      --text: #1a1a2e;
-      --text2: #5a5f72;
-      --white: #ffffff;
-      --radius: 16px;
-      --radius-sm: 10px;
-      --shadow: 0 4px 24px rgba(26,110,245,0.10);
-    }
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+#wrap { padding: 1rem 0; font-family: var(--font-sans); user-select: none; }
+.stats { display: flex; gap: 10px; margin-bottom: 14px; }
+.stat { flex: 1; background: var(--color-background-secondary); border-radius: var(--border-radius-md); padding: 10px; text-align: center; }
+.slabel { font-size: 11px; color: var(--color-text-secondary); font-weight: 500; }
+.sval { font-size: 22px; font-weight: 500; color: var(--color-text-primary); }
+.row { display: flex; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
+.pill { flex: 1; min-width: 70px; border: 0.5px solid var(--color-border-secondary); background: var(--color-background-primary); color: var(--color-text-secondary); border-radius: var(--border-radius-md); padding: 7px 4px; font-size: 12px; cursor: pointer; font-family: var(--font-sans); transition: all 0.12s; }
+.pill:hover { background: var(--color-background-secondary); }
+.pill.on { background: #185FA5; border-color: #185FA5; color: #E6F1FB; }
+.slabel2 { font-size: 11px; color: var(--color-text-secondary); margin-bottom: 5px; }
 
-    body {
-      font-family: 'Nunito', sans-serif;
-      background: #f0f4ff;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: flex-start;
-      padding: 24px 16px 40px;
-      color: var(--text);
-    }
+#arena {
+  position: relative;
+  width: 100%;
+  height: 260px;
+  border-radius: var(--border-radius-lg);
+  border: 0.5px solid var(--color-border-tertiary);
+  background: var(--color-background-secondary);
+  overflow: hidden;
+  margin-bottom: 10px;
+}
 
-    header {
-      text-align: center;
-      margin-bottom: 20px;
-    }
-    header h1 {
-      font-size: 26px;
-      font-weight: 800;
-      color: var(--blue);
-      letter-spacing: -0.5px;
-    }
-    header p {
-      font-size: 14px;
-      color: var(--text2);
-      margin-top: 4px;
-    }
+#click-zone {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
 
-    .card {
-      background: var(--white);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      padding: 20px;
-      width: 100%;
-      max-width: 560px;
-    }
+#prompt-box { text-align: center; pointer-events: none; }
+#ptext { font-size: 34px; font-weight: 500; color: var(--color-text-primary); line-height: 1.1; }
+#psub { font-size: 13px; color: var(--color-text-secondary); margin-top: 6px; }
 
-    /* Stats */
-    .stats {
-      display: flex;
-      gap: 10px;
-      margin-bottom: 16px;
-    }
-    .stat {
-      flex: 1;
-      background: var(--gray);
-      border-radius: var(--radius-sm);
-      padding: 10px;
-      text-align: center;
-    }
-    .stat-label { font-size: 11px; color: var(--text2); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
-    .stat-val { font-size: 24px; font-weight: 800; color: var(--text); margin-top: 2px; }
-    .stat-val.green { color: var(--green); }
-    .stat-val.red { color: var(--red); }
+#floating-btn {
+  position: absolute;
+  width: 130px;
+  height: 130px;
+  border-radius: 50%;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border: 3px solid #185FA5;
+  background: #E6F1FB;
+  gap: 4px;
+  pointer-events: none;
+}
+#floating-btn span { font-size: 13px; font-weight: 500; color: #042C53; }
 
-    /* Mode buttons */
-    .mode-row {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-      margin-bottom: 16px;
-    }
-    .mode-label { font-size: 12px; font-weight: 700; color: var(--text2); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.06em; }
-    .mode-btn {
-      flex: 1;
-      min-width: 80px;
-      border: 2px solid var(--gray2);
-      background: var(--white);
-      color: var(--text2);
-      border-radius: var(--radius-sm);
-      padding: 8px 6px;
-      font-size: 13px;
-      font-weight: 700;
-      cursor: pointer;
-      transition: all 0.15s;
-      font-family: 'Nunito', sans-serif;
-    }
-    .mode-btn:hover { border-color: var(--blue); color: var(--blue); background: var(--blue-light); }
-    .mode-btn.active { border-color: var(--blue); background: var(--blue); color: var(--white); }
+#feedback {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 70px;
+  opacity: 0;
+  pointer-events: none;
+  border-radius: var(--border-radius-lg);
+  transition: opacity 0.1s;
+}
+#feedback.show { opacity: 1; }
 
-    /* Arena */
-    #arena {
-      position: relative;
-      width: 100%;
-      height: 260px;
-      background: var(--gray);
-      border-radius: var(--radius);
-      overflow: hidden;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-bottom: 12px;
-    }
+.ov {
+  position: absolute;
+  inset: 0;
+  background: var(--color-background-primary);
+  border-radius: var(--border-radius-lg);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 20px;
+  text-align: center;
+}
+.ov h2 { font-size: 18px; font-weight: 500; color: var(--color-text-primary); }
+.ov p { font-size: 13px; color: var(--color-text-secondary); max-width: 280px; line-height: 1.6; }
+.ov .em { font-size: 40px; }
 
-    /* Timer bar */
-    #timer-bar {
-      width: 100%;
-      height: 6px;
-      background: var(--gray2);
-      border-radius: 3px;
-      overflow: hidden;
-      margin-bottom: 16px;
-    }
-    #timer-fill {
-      height: 100%;
-      width: 100%;
-      background: var(--blue);
-      border-radius: 3px;
-      transition: width 0.08s linear, background 0.3s;
-    }
+.startbtn {
+  background: #185FA5;
+  color: #E6F1FB;
+  border: none;
+  border-radius: var(--border-radius-md);
+  padding: 11px 28px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  font-family: var(--font-sans);
+  margin-top: 4px;
+}
+.startbtn:hover { background: #0C447C; }
 
-    /* Prompt */
-    #prompt-box {
-      text-align: center;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 6px;
-    }
-    #prompt-text {
-      font-size: 32px;
-      font-weight: 800;
-      letter-spacing: -0.5px;
-      transition: color 0.2s;
-    }
-    #prompt-sub {
-      font-size: 14px;
-      color: var(--text2);
-      font-weight: 600;
-    }
+.rsgrid { display: flex; gap: 10px; }
+.rscard { background: var(--color-background-secondary); border-radius: var(--border-radius-md); padding: 10px 16px; text-align: center; }
+.rscard .v { font-size: 20px; font-weight: 500; }
+.rscard .l { font-size: 11px; color: var(--color-text-secondary); margin-top: 2px; }
 
-    /* Target circle */
-    #target {
-      position: absolute;
-      width: 120px;
-      height: 120px;
-      border-radius: 50%;
-      display: none;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      border: none;
-      outline: none;
-      transition: transform 0.1s;
-      box-shadow: 0 4px 18px rgba(0,0,0,0.12);
-    }
-    #target:active { transform: scale(0.92) !important; }
-    #target .t-icon { font-size: 32px; line-height: 1; }
-    #target .t-label { font-size: 13px; font-weight: 800; margin-top: 4px; }
+#tbar { width: 100%; height: 5px; background: var(--color-border-tertiary); border-radius: 3px; overflow: hidden; margin-bottom: 12px; }
+#tfill { height: 100%; width: 100%; background: #185FA5; border-radius: 3px; transition: width 0.08s linear, background 0.25s; }
 
-    /* Feedback overlay */
-    #feedback {
-      position: absolute;
-      inset: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 64px;
-      pointer-events: none;
-      opacity: 0;
-      border-radius: var(--radius);
-      transition: opacity 0.12s;
-    }
-    #feedback.show { opacity: 1; }
+.dots { display: flex; gap: 5px; justify-content: center; margin-bottom: 12px; }
+.dot { width: 9px; height: 9px; border-radius: 50%; background: var(--color-border-secondary); transition: background 0.2s; }
+.dot.ok { background: #1D9E75; }
+.dot.no { background: #E24B4A; }
+.dot.cur { background: #185FA5; }
 
-    /* Overlays */
-    .overlay {
-      position: absolute;
-      inset: 0;
-      background: var(--white);
-      border-radius: var(--radius);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      padding: 24px;
-      text-align: center;
-    }
-    .overlay h2 { font-size: 20px; font-weight: 800; color: var(--text); }
-    .overlay p { font-size: 14px; color: var(--text2); max-width: 280px; line-height: 1.6; }
-    .overlay .big-emoji { font-size: 44px; line-height: 1; }
+#hint { font-size: 12px; color: var(--color-text-secondary); text-align: center; }
 
-    .btn-primary {
-      background: var(--blue);
-      color: var(--white);
-      border: none;
-      border-radius: var(--radius-sm);
-      padding: 12px 32px;
-      font-size: 15px;
-      font-weight: 800;
-      cursor: pointer;
-      font-family: 'Nunito', sans-serif;
-      transition: background 0.15s, transform 0.1s;
-      margin-top: 4px;
-    }
-    .btn-primary:hover { background: #1458cc; }
-    .btn-primary:active { transform: scale(0.97); }
+#side-indicators {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  pointer-events: none;
+}
+.side-ind {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 500;
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+#ind-left { color: #185FA5; }
+#ind-right { color: #1D9E75; }
+#side-indicators.show-left #ind-left { opacity: 0.25; }
+#side-indicators.show-right #ind-right { opacity: 0.25; }
+</style>
 
-    .result-grid {
-      display: flex;
-      gap: 12px;
-      margin: 4px 0;
-    }
-    .result-stat {
-      background: var(--gray);
-      border-radius: var(--radius-sm);
-      padding: 10px 18px;
-      text-align: center;
-    }
-    .result-stat .rs-val { font-size: 22px; font-weight: 800; color: var(--blue); }
-    .result-stat .rs-label { font-size: 11px; color: var(--text2); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; margin-top: 2px; }
+<div id="wrap">
+  <h2 class="sr-only">Game latihan klik kanan dan kiri mouse</h2>
 
-    /* Difficulty */
-    .diff-row { display: flex; gap: 8px; margin-bottom: 8px; }
-    .diff-btn {
-      flex: 1;
-      border: 2px solid var(--gray2);
-      background: var(--white);
-      color: var(--text2);
-      border-radius: var(--radius-sm);
-      padding: 7px 4px;
-      font-size: 12px;
-      font-weight: 700;
-      cursor: pointer;
-      transition: all 0.15s;
-      font-family: 'Nunito', sans-serif;
-    }
-    .diff-btn:hover { border-color: var(--amber); color: var(--amber); }
-    .diff-btn.active { border-color: var(--amber); background: var(--amber-light); color: var(--amber); }
-
-    #hint {
-      font-size: 12px;
-      color: var(--text2);
-      text-align: center;
-      padding: 0 8px;
-    }
-
-    #round-info {
-      font-size: 12px;
-      font-weight: 700;
-      color: var(--text2);
-      text-align: right;
-      margin-bottom: 8px;
-    }
-
-    .progress-dots {
-      display: flex;
-      gap: 5px;
-      justify-content: center;
-      margin-bottom: 14px;
-      flex-wrap: wrap;
-    }
-    .dot {
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      background: var(--gray2);
-      transition: background 0.2s;
-    }
-    .dot.correct { background: var(--green); }
-    .dot.wrong { background: var(--red); }
-    .dot.current { background: var(--blue); }
-  </style>
-</head>
-<body>
-
-<header>
-  <h1>🖱️ Latihan Klik Mouse</h1>
-  <p>Klik kiri atau kanan sesuai perintah!</p>
-</header>
-
-<div class="card">
-  <!-- Stats -->
   <div class="stats">
-    <div class="stat">
-      <div class="stat-label">Skor</div>
-      <div class="stat-val" id="score">0</div>
-    </div>
-    <div class="stat">
-      <div class="stat-label">Benar</div>
-      <div class="stat-val green" id="correct">0</div>
-    </div>
-    <div class="stat">
-      <div class="stat-label">Salah</div>
-      <div class="stat-val red" id="wrong">0</div>
-    </div>
+    <div class="stat"><div class="slabel">Skor</div><div class="sval" id="score">0</div></div>
+    <div class="stat"><div class="slabel">Benar</div><div class="sval" id="correct" style="color:#1D9E75">0</div></div>
+    <div class="stat"><div class="slabel">Salah</div><div class="sval" id="wrong" style="color:#E24B4A">0</div></div>
   </div>
 
-  <!-- Mode -->
-  <div class="mode-label">Mode tampilan</div>
-  <div class="mode-row">
-    <button class="mode-btn active" onclick="setMode('text',this)">Teks</button>
-    <button class="mode-btn" onclick="setMode('icon',this)">Ikon</button>
-    <button class="mode-btn" onclick="setMode('color',this)">Warna</button>
-    <button class="mode-btn" onclick="setMode('mixed',this)">Campur</button>
+  <div class="slabel2">Mode</div>
+  <div class="row" style="margin-bottom:10px">
+    <button class="pill on" onclick="setMode('text',this)">Teks</button>
+    <button class="pill" onclick="setMode('icon',this)">Ikon</button>
+    <button class="pill" onclick="setMode('color',this)">Warna</button>
+    <button class="pill" onclick="setMode('mixed',this)">Campur</button>
+  </div>
+  <div class="slabel2">Kecepatan</div>
+  <div class="row">
+    <button class="pill" onclick="setDiff(5000,this)">Santai</button>
+    <button class="pill on" onclick="setDiff(3500,this)">Normal</button>
+    <button class="pill" onclick="setDiff(2000,this)">Cepat</button>
   </div>
 
-  <!-- Difficulty -->
-  <div class="mode-label">Kecepatan</div>
-  <div class="diff-row">
-    <button class="diff-btn" onclick="setDiff('slow',this)">🐢 Santai</button>
-    <button class="diff-btn active" onclick="setDiff('normal',this)">🐇 Normal</button>
-    <button class="diff-btn" onclick="setDiff('fast',this)">⚡ Cepat</button>
-  </div>
+  <div class="dots" id="dots"></div>
 
-  <!-- Progress dots -->
-  <div class="progress-dots" id="dots"></div>
-
-  <!-- Arena -->
   <div id="arena">
-    <!-- Start overlay -->
-    <div class="overlay" id="start-overlay">
-      <div class="big-emoji">🖱️</div>
-      <h2>Siap Latihan?</h2>
-      <p>Baca perintahnya, lalu klik tombol mouse yang benar sebelum waktu habis!</p>
-      <button class="btn-primary" onclick="startGame()">Mulai Main</button>
+    <div id="side-indicators">
+      <div class="side-ind" id="ind-left">KIRI</div>
+      <div class="side-ind" id="ind-right">KANAN</div>
     </div>
-    <!-- Result overlay -->
-    <div class="overlay" id="result-overlay" style="display:none">
-      <div class="big-emoji" id="result-emoji">🎉</div>
-      <h2 id="result-title">Selesai!</h2>
-      <div class="result-grid">
-        <div class="result-stat"><div class="rs-val" id="r-score">0</div><div class="rs-label">Skor</div></div>
-        <div class="result-stat"><div class="rs-val" id="r-acc" style="color:var(--green)">0%</div><div class="rs-label">Akurasi</div></div>
-        <div class="result-stat"><div class="rs-val" id="r-correct" style="color:var(--green)">0</div><div class="rs-label">Benar</div></div>
+
+    <div id="click-zone"
+      onclick="handleClick(event,'left')"
+      oncontextmenu="handleClick(event,'right')">
+      <div id="prompt-box">
+        <div id="ptext">—</div>
+        <div id="psub"></div>
       </div>
-      <button class="btn-primary" onclick="startGame()">Main Lagi</button>
+      <div id="floating-btn">
+        <span id="fb-icon" style="font-size:28px"></span>
+        <span id="fb-label"></span>
+      </div>
     </div>
-    <!-- Prompt -->
-    <div id="prompt-box">
-      <div id="prompt-text">—</div>
-      <div id="prompt-sub"></div>
-    </div>
-    <!-- Target (color mode) -->
-    <button id="target"
-      oncontextmenu="handleClick(event,'right')"
-      onclick="handleClick(event,'left')">
-      <span class="t-icon" id="t-icon"></span>
-      <span class="t-label" id="t-label"></span>
-    </button>
-    <!-- Feedback -->
+
     <div id="feedback"></div>
+
+    <div class="ov" id="ov-start">
+      <div class="em">🖱️</div>
+      <h2>Latihan Klik Mouse</h2>
+      <p>Klik di mana saja — kiri atau kanan — sesuai perintah yang muncul!</p>
+      <button class="startbtn" onclick="startGame()">Mulai</button>
+    </div>
+
+    <div class="ov" id="ov-result" style="display:none">
+      <div class="em" id="r-em">🎉</div>
+      <h2 id="r-title">Selesai!</h2>
+      <div class="rsgrid">
+        <div class="rscard"><div class="v" id="r-score">0</div><div class="l">Skor</div></div>
+        <div class="rscard"><div class="v" id="r-acc" style="color:#1D9E75">0%</div><div class="l">Akurasi</div></div>
+        <div class="rscard"><div class="v" id="r-ok" style="color:#1D9E75">0</div><div class="l">Benar</div></div>
+      </div>
+      <button class="startbtn" onclick="startGame()">Main Lagi</button>
+    </div>
   </div>
 
-  <!-- Timer bar -->
-  <div id="timer-bar"><div id="timer-fill"></div></div>
-
-  <div id="hint">💡 Klik kanan = tombol kanan mouse (bukan klik biasa)</div>
+  <div id="tbar"><div id="tfill"></div></div>
+  <div id="hint">Klik kanan = tombol kanan mouse &nbsp;|&nbsp; Klik kiri = tombol kiri (biasa)</div>
 </div>
 
 <script>
-  const TOTAL = 10;
-  const DIFF = { slow: 5000, normal: 3500, fast: 2000 };
+const TOTAL = 10;
+let mode = 'text', timeLimit = 3500;
+let score = 0, ok = 0, bad = 0, round = 0;
+let cmd = null, timer = null, fbTimeout = null, active = false, results = [];
 
-  let mode = 'text', diff = 'normal';
-  let score = 0, correctCount = 0, wrongCount = 0;
-  let round = 0;
-  let currentCmd = null;
-  let timerInterval = null;
-  let timeLimit = DIFF.normal;
-  let gameActive = false;
-  let feedbackTimeout = null;
-  let results = [];
+const CMDS = [
+  { side:'left',  label:'KLIK KIRI',  sub:'Klik tombol kiri mouse',  icon:'◀', bg:'#E6F1FB', border:'#185FA5', tc:'#042C53' },
+  { side:'right', label:'KLIK KANAN', sub:'Klik tombol kanan mouse', icon:'▶', bg:'#E1F5EE', border:'#1D9E75', tc:'#04342C' }
+];
 
-  const CMDS = [
-    { cmd:'left',  label:'KLIK KIRI',  sub:'Tekan tombol KIRI mouse',  icon:'◀️', bg:'#e8f0fe', border:'#1a6ef5', textColor:'#0d47a1' },
-    { cmd:'right', label:'KLIK KANAN', sub:'Tekan tombol KANAN mouse', icon:'▶️', bg:'#e6f9f0', border:'#16a05c', textColor:'#0a5c35' }
-  ];
+function setMode(m, btn) {
+  mode = m;
+  document.querySelectorAll('.pill').forEach(b => {
+    if(['Teks','Ikon','Warna','Campur'].includes(b.textContent)) b.classList.remove('on');
+  });
+  btn.classList.add('on');
+}
 
-  const L_LABELS = ['← Kiri','KIRI','Klik Kiri'];
-  const R_LABELS = ['Kanan →','KANAN','Klik Kanan'];
+function setDiff(ms, btn) {
+  timeLimit = ms;
+  document.querySelectorAll('.pill').forEach(b => {
+    if(['Santai','Normal','Cepat'].includes(b.textContent)) b.classList.remove('on');
+  });
+  btn.classList.add('on');
+}
 
-  function setMode(m, btn) {
-    mode = m;
-    document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
+function makeDots() {
+  const c = document.getElementById('dots');
+  c.innerHTML = '';
+  for (let i = 0; i < TOTAL; i++) {
+    const d = document.createElement('div');
+    d.className = 'dot';
+    if (results[i] === true) d.classList.add('ok');
+    else if (results[i] === false) d.classList.add('no');
+    else if (i === round) d.classList.add('cur');
+    c.appendChild(d);
   }
+}
 
-  function setDiff(d, btn) {
-    diff = d;
-    timeLimit = DIFF[d];
-    document.querySelectorAll('.diff-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-  }
+function startGame() {
+  score = 0; ok = 0; bad = 0; round = 0; results = [];
+  updateStats(); makeDots();
+  document.getElementById('ov-start').style.display = 'none';
+  document.getElementById('ov-result').style.display = 'none';
+  active = true;
+  nextRound();
+}
 
-  function makeDots() {
-    const c = document.getElementById('dots');
-    c.innerHTML = '';
-    for (let i = 0; i < TOTAL; i++) {
-      const d = document.createElement('div');
-      d.className = 'dot' + (i === round ? ' current' : '');
-      if (results[i] === true) d.classList.add('correct');
-      if (results[i] === false) d.classList.add('wrong');
-      c.appendChild(d);
-    }
-  }
+function nextRound() {
+  if (round >= TOTAL) { endGame(); return; }
+  clearTimer();
+  cmd = CMDS[Math.random() < 0.5 ? 0 : 1];
+  makeDots();
+  renderPrompt();
+  startTimer();
+}
 
-  function startGame() {
-    score = 0; correctCount = 0; wrongCount = 0; round = 0; results = [];
-    updateStats();
-    makeDots();
-    hide('start-overlay');
-    document.getElementById('result-overlay').style.display = 'none';
-    gameActive = true;
-    nextRound();
-  }
+function renderPrompt() {
+  const fb = document.getElementById('feedback');
+  fb.className = ''; fb.textContent = '';
+  const pb = document.getElementById('prompt-box');
+  const fbt = document.getElementById('floating-btn');
+  const si = document.getElementById('side-indicators');
+  pb.style.opacity = '1'; fbt.style.opacity = '1';
+  si.className = '';
 
-  function nextRound() {
-    if (round >= TOTAL) { endGame(); return; }
-    clearTimer();
-    currentCmd = CMDS[Math.random() < 0.5 ? 0 : 1];
-    makeDots();
-    renderPrompt();
-    startTimer();
-  }
+  let eff = mode;
+  if (mode === 'mixed') eff = ['text','icon','color'][Math.floor(Math.random()*3)];
 
-  function renderPrompt() {
-    const pb = document.getElementById('prompt-box');
-    const tgt = document.getElementById('target');
-    const fb = document.getElementById('feedback');
-    fb.className = ''; fb.textContent = '';
-    pb.style.opacity = '1'; tgt.style.opacity = '1';
-
-    let eff = mode;
-    if (mode === 'mixed') eff = ['text','icon','color'][Math.floor(Math.random()*3)];
-
-    if (eff === 'color') {
-      pb.style.display = 'none';
-      tgt.style.display = 'flex';
-      tgt.style.background = currentCmd.bg;
-      tgt.style.border = '3px solid ' + currentCmd.border;
-      document.getElementById('t-icon').textContent = currentCmd.icon;
-      const labels = currentCmd.cmd === 'left' ? L_LABELS : R_LABELS;
-      document.getElementById('t-label').textContent = labels[Math.floor(Math.random()*labels.length)];
-      document.getElementById('t-label').style.color = currentCmd.textColor;
-      const arena = document.getElementById('arena');
-      const W = arena.offsetWidth, H = arena.offsetHeight;
-      tgt.style.left = (20 + Math.random() * (W - 160)) + 'px';
-      tgt.style.top  = (20 + Math.random() * (H - 160)) + 'px';
+  if (eff === 'color') {
+    pb.style.display = 'none';
+    fbt.style.display = 'flex';
+    fbt.style.background = cmd.bg;
+    fbt.style.borderColor = cmd.border;
+    document.getElementById('fb-icon').textContent = cmd.icon;
+    document.getElementById('fb-label').textContent = cmd.side === 'left' ? 'KIRI' : 'KANAN';
+    document.getElementById('fb-label').style.color = cmd.tc;
+    const arena = document.getElementById('arena');
+    const W = arena.offsetWidth, H = arena.offsetHeight;
+    fbt.style.left = (20 + Math.random() * (W - 170)) + 'px';
+    fbt.style.top  = (20 + Math.random() * (H - 170)) + 'px';
+    fbt.style.position = 'absolute';
+  } else {
+    fbt.style.display = 'none';
+    pb.style.display = 'flex';
+    pb.style.flexDirection = 'column';
+    pb.style.alignItems = 'center';
+    const pt = document.getElementById('ptext');
+    const ps = document.getElementById('psub');
+    if (eff === 'text') {
+      pt.textContent = cmd.label;
+      pt.style.color = cmd.side === 'left' ? '#185FA5' : '#1D9E75';
+      ps.textContent = cmd.sub;
+      si.className = cmd.side === 'left' ? 'show-left' : 'show-right';
     } else {
-      tgt.style.display = 'none';
-      pb.style.display = 'flex';
-      const pt = document.getElementById('prompt-text');
-      const ps = document.getElementById('prompt-sub');
-      if (eff === 'text') {
-        pt.textContent = currentCmd.label;
-        pt.style.color = currentCmd.cmd === 'left' ? '#1a6ef5' : '#16a05c';
-        pt.style.fontSize = '32px';
-        ps.textContent = currentCmd.sub;
-      } else {
-        pt.textContent = currentCmd.icon + ' ' + (currentCmd.cmd === 'left' ? 'Kiri' : 'Kanan');
-        pt.style.color = '#1a1a2e';
-        pt.style.fontSize = '40px';
-        ps.textContent = currentCmd.sub;
-      }
+      pt.textContent = cmd.icon + '  ' + (cmd.side === 'left' ? 'Kiri' : 'Kanan');
+      pt.style.color = 'var(--color-text-primary)';
+      pt.style.fontSize = '38px';
+      ps.textContent = cmd.sub;
     }
   }
+}
 
-  function startTimer() {
-    const fill = document.getElementById('timer-fill');
-    fill.style.width = '100%';
-    fill.style.background = '#1a6ef5';
-    const start = Date.now();
-    timerInterval = setInterval(() => {
-      const pct = Math.max(0, 1 - (Date.now()-start) / timeLimit);
-      fill.style.width = (pct*100) + '%';
-      if (pct < 0.3) fill.style.background = '#e03030';
-      else if (pct < 0.6) fill.style.background = '#e07a00';
-      if (pct <= 0) { clearTimer(); onTimeout(); }
-    }, 50);
-  }
+function startTimer() {
+  const fill = document.getElementById('tfill');
+  fill.style.width = '100%';
+  fill.style.background = '#185FA5';
+  const start = Date.now();
+  timer = setInterval(() => {
+    const pct = Math.max(0, 1 - (Date.now() - start) / timeLimit);
+    fill.style.width = (pct * 100) + '%';
+    if (pct < 0.3) fill.style.background = '#E24B4A';
+    else if (pct < 0.6) fill.style.background = '#BA7517';
+    if (pct <= 0) { clearTimer(); onTimeout(); }
+  }, 50);
+}
 
-  function clearTimer() {
-    if (timerInterval) { clearInterval(timerInterval); timerInterval = null; }
-  }
+function clearTimer() {
+  if (timer) { clearInterval(timer); timer = null; }
+}
 
-  function handleClick(e, side) {
-    e.preventDefault();
-    if (!gameActive || !currentCmd) return;
-    clearTimer();
-    const correct = side === currentCmd.cmd;
-    results[round] = correct;
-    if (correct) { score += 10; correctCount++; showFeedback(true); }
-    else { score = Math.max(0, score-5); wrongCount++; showFeedback(false); }
-    round++;
-    updateStats();
-  }
+function handleClick(e, side) {
+  e.preventDefault();
+  if (!active || !cmd) return;
+  clearTimer();
+  const correct = side === cmd.side;
+  results[round] = correct;
+  if (correct) { score += 10; ok++; }
+  else { score = Math.max(0, score - 5); bad++; }
+  round++;
+  updateStats();
+  showFeedback(correct);
+}
 
-  function onTimeout() {
-    if (!gameActive) return;
-    results[round] = false;
-    wrongCount++;
-    score = Math.max(0, score-3);
-    round++;
-    updateStats();
-    showFeedback(false, true);
-  }
+function onTimeout() {
+  if (!active) return;
+  results[round] = false;
+  bad++;
+  score = Math.max(0, score - 3);
+  round++;
+  updateStats();
+  showFeedback(false, true);
+}
 
-  function showFeedback(ok, timeout=false) {
-    const fb = document.getElementById('feedback');
-    const pb = document.getElementById('prompt-box');
-    const tgt = document.getElementById('target');
-    fb.textContent = ok ? '✅' : (timeout ? '⏰' : '❌');
-    fb.style.background = ok ? 'rgba(22,160,92,0.12)' : 'rgba(224,48,48,0.12)';
-    fb.className = 'show';
-    pb.style.opacity = '0.25'; tgt.style.opacity = '0.25';
-    makeDots();
-    if (feedbackTimeout) clearTimeout(feedbackTimeout);
-    feedbackTimeout = setTimeout(() => { fb.className=''; nextRound(); }, 650);
-  }
+function showFeedback(correct, timeout = false) {
+  const fb = document.getElementById('feedback');
+  const pb = document.getElementById('prompt-box');
+  const fbt = document.getElementById('floating-btn');
+  fb.textContent = correct ? '✅' : (timeout ? '⏰' : '❌');
+  fb.style.background = correct ? 'rgba(29,158,117,0.12)' : 'rgba(226,75,74,0.12)';
+  fb.className = 'show';
+  pb.style.opacity = '0.2'; fbt.style.opacity = '0.2';
+  document.getElementById('side-indicators').className = '';
+  makeDots();
+  if (fbTimeout) clearTimeout(fbTimeout);
+  fbTimeout = setTimeout(() => { fb.className = ''; nextRound(); }, 680);
+}
 
-  function updateStats() {
-    document.getElementById('score').textContent = score;
-    document.getElementById('correct').textContent = correctCount;
-    document.getElementById('wrong').textContent = wrongCount;
-  }
+function updateStats() {
+  document.getElementById('score').textContent = score;
+  document.getElementById('correct').textContent = ok;
+  document.getElementById('wrong').textContent = bad;
+}
 
-  function endGame() {
-    gameActive = false; clearTimer();
-    const acc = Math.round((correctCount/TOTAL)*100);
-    document.getElementById('result-overlay').style.display = 'flex';
-    document.getElementById('result-emoji').textContent = acc >= 80 ? '🎉' : acc >= 50 ? '👍' : '💪';
-    document.getElementById('result-title').textContent = acc >= 80 ? 'Luar biasa!' : acc >= 50 ? 'Lumayan, terus latihan!' : 'Ayo latihan lagi!';
-    document.getElementById('r-score').textContent = score;
-    document.getElementById('r-acc').textContent = acc + '%';
-    document.getElementById('r-correct').textContent = correctCount + '/' + TOTAL;
-    makeDots();
-  }
+function endGame() {
+  active = false; clearTimer();
+  const acc = Math.round((ok / TOTAL) * 100);
+  document.getElementById('ov-result').style.display = 'flex';
+  document.getElementById('r-em').textContent = acc >= 80 ? '🎉' : acc >= 50 ? '👍' : '💪';
+  document.getElementById('r-title').textContent = acc >= 80 ? 'Luar biasa!' : acc >= 50 ? 'Lumayan!' : 'Ayo latihan lagi!';
+  document.getElementById('r-score').textContent = score;
+  document.getElementById('r-acc').textContent = acc + '%';
+  document.getElementById('r-ok').textContent = ok + '/' + TOTAL;
+  makeDots();
+}
 
-  function hide(id) { document.getElementById(id).style.display = 'none'; }
-
-  document.addEventListener('contextmenu', e => { if (gameActive) e.preventDefault(); });
+document.addEventListener('contextmenu', e => { if (active) e.preventDefault(); });
 </script>
-</body>
-</html>
